@@ -1,5 +1,6 @@
 #include "MainFrame.h"
 #include "App.h"
+#include "Calculation.h"
 #include<string>
 #include<stack>
 
@@ -16,25 +17,31 @@ void MainFrame::createControls()
 	panel = new wxPanel(this);
 
 	inputField = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(400, 200));
-	sevenButton = new wxButton(panel, wxID_ANY, "7", wxPoint(0, 400), wxSize(100, 75), wxBORDER_NONE);
-	eightButton = new wxButton(panel, wxID_ANY, "8", wxPoint(100, 400), wxSize(100, 75), wxBORDER_NONE);
-	nineButton = new wxButton(panel, wxID_ANY, "9", wxPoint(200, 400), wxSize(100, 75), wxBORDER_NONE);
-	plusButton = new wxButton(panel, wxID_ANY, "+", wxPoint(300, 400), wxSize(100, 75), wxBORDER_NONE);
 
-	fourButton = new wxButton(panel, wxID_ANY, "4", wxPoint(0, 475), wxSize(100, 75), wxBORDER_NONE);
-	fiveButton = new wxButton(panel, wxID_ANY, "5", wxPoint(100, 475), wxSize(100, 75), wxBORDER_NONE);
-	sixButton = new wxButton(panel, wxID_ANY, "6", wxPoint(200, 475), wxSize(100, 75), wxBORDER_NONE);
-	minusButton = new wxButton(panel, wxID_ANY, "-", wxPoint(300, 475), wxSize(100, 75), wxBORDER_NONE);
+	powerButton = new wxButton(panel, wxID_ANY, "^", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	openBracketButton = new wxButton(panel, wxID_ANY, "(", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	closedBracketButton = new wxButton(panel, wxID_ANY, ")", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	clearButton = new wxButton(panel, wxID_ANY, "CE", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
 
-	oneButton = new wxButton(panel, wxID_ANY, "1", wxPoint(0, 550), wxSize(100, 75), wxBORDER_NONE);
-	twoButton = new wxButton(panel, wxID_ANY, "2", wxPoint(100, 550), wxSize(100, 75), wxBORDER_NONE);
-	threeButton = new wxButton(panel, wxID_ANY, "3", wxPoint(200, 550), wxSize(100, 75), wxBORDER_NONE);
-	multiplyButton = new wxButton(panel, wxID_ANY, "*", wxPoint(300, 550), wxSize(100, 75), wxBORDER_NONE);
+	sevenButton = new wxButton(panel, wxID_ANY, "7", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	eightButton = new wxButton(panel, wxID_ANY, "8", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	nineButton = new wxButton(panel, wxID_ANY, "9", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	plusButton = new wxButton(panel, wxID_ANY, "+", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
 
-	zeroButton = new wxButton(panel, wxID_ANY, "0", wxPoint(0, 625), wxSize(100, 75), wxBORDER_NONE);
-	decimalButton = new wxButton(panel, wxID_ANY, ".", wxPoint(100, 625), wxSize(100, 75), wxBORDER_NONE);
-	divisionButton = new wxButton(panel, wxID_ANY, "/", wxPoint(200, 625), wxSize(100, 75), wxBORDER_NONE);
-	equalButton = new wxButton(panel, wxID_ANY, "=", wxPoint(300, 625), wxSize(100, 75), wxBORDER_NONE);
+	fourButton = new wxButton(panel, wxID_ANY, "4", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	fiveButton = new wxButton(panel, wxID_ANY, "5", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	sixButton = new wxButton(panel, wxID_ANY, "6", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	minusButton = new wxButton(panel, wxID_ANY, "-", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+
+	oneButton = new wxButton(panel, wxID_ANY, "1", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	twoButton = new wxButton(panel, wxID_ANY, "2", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	threeButton = new wxButton(panel, wxID_ANY, "3", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	multiplyButton = new wxButton(panel, wxID_ANY, "*", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+
+	zeroButton = new wxButton(panel, wxID_ANY, "0", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	decimalButton = new wxButton(panel, wxID_ANY, ".", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	divisionButton = new wxButton(panel, wxID_ANY, "/", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+	equalButton = new wxButton(panel, wxID_ANY, "=", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
 }
 
 void MainFrame::styleControls()
@@ -60,6 +67,10 @@ void MainFrame::styleControls()
 	divisionButton->SetFont(buttonFont);
 	decimalButton->SetFont(decimalButtonFont);
 	equalButton->SetFont(buttonFont);
+	powerButton->SetFont(buttonFont);
+	openBracketButton->SetFont(buttonFont);
+	closedBracketButton->SetFont(buttonFont);
+	clearButton->SetFont(buttonFont);
 
 	panel->SetBackgroundColour(wxColour(240, 240, 255));
 	zeroButton->SetBackgroundColour(wxColour(240, 248, 255));
@@ -78,6 +89,10 @@ void MainFrame::styleControls()
 	divisionButton->SetBackgroundColour(wxColour(240, 248, 255));
 	decimalButton->SetBackgroundColour(wxColour(240, 248, 255));
 	equalButton->SetBackgroundColour(wxColour(240, 248, 255));
+	powerButton->SetBackgroundColour(wxColour(240, 248, 255));
+	openBracketButton->SetBackgroundColour(wxColour(240, 248, 255));
+	closedBracketButton->SetBackgroundColour(wxColour(240, 248, 255));
+	clearButton->SetBackgroundColour(wxColour(240, 248, 255));
 }
 
 void MainFrame::setSizers()
@@ -85,6 +100,13 @@ void MainFrame::setSizers()
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	mainSizer->Add(inputField, wxSizerFlags().Proportion(1).Expand());
+
+	wxBoxSizer* zerothRow = new wxBoxSizer(wxHORIZONTAL);
+	zerothRow->Add(powerButton, wxSizerFlags().Proportion(1));
+	zerothRow->Add(openBracketButton, wxSizerFlags().Proportion(1));
+	zerothRow->Add(closedBracketButton, wxSizerFlags().Proportion(1));
+	zerothRow->Add(clearButton, wxSizerFlags().Proportion(1));
+	mainSizer->Add(zerothRow, wxSizerFlags().Expand());
 
 	wxBoxSizer* firstRow = new wxBoxSizer(wxHORIZONTAL);
 	firstRow->Add(sevenButton, wxSizerFlags().Proportion(1));
@@ -123,6 +145,10 @@ void MainFrame::setSizers()
 
 void MainFrame::bindControls()
 {
+	powerButton->Bind(wxEVT_BUTTON, &MainFrame::onPowerButtonClicked, this);
+	openBracketButton->Bind(wxEVT_BUTTON, &MainFrame::onOpenButtonClicked, this);
+	closedBracketButton->Bind(wxEVT_BUTTON, &MainFrame::onClosedButtonClicked, this);
+	clearButton->Bind(wxEVT_BUTTON, &MainFrame::onClearButtonClicked, this);
 	oneButton->Bind(wxEVT_BUTTON, &MainFrame::onButton1Clicked, this);
 	twoButton->Bind(wxEVT_BUTTON, &MainFrame::onButton2Clicked, this);
 	threeButton->Bind(wxEVT_BUTTON, &MainFrame::onButton3Clicked, this);
@@ -215,7 +241,17 @@ void MainFrame::onButtonDivisionClicked(wxCommandEvent& evt)
 
 void MainFrame::onButtonEqualClicked(wxCommandEvent& evt)
 {
-	calculate();
+	std::string str = inputField->GetValue().ToStdString();
+	std::string ans = calculate(str);
+
+	while (ans.back() == '0')
+		ans.pop_back();
+	if (ans.back() == '.') 
+		ans.pop_back();
+
+	long pos = inputField->GetInsertionPoint();
+	inputField->SetValue(ans);
+	inputField->SetInsertionPoint(std::max(pos, (long)ans.size()));
 }
 
 void MainFrame::onButtonDecimalClicked(wxCommandEvent& evt)
@@ -223,9 +259,51 @@ void MainFrame::onButtonDecimalClicked(wxCommandEvent& evt)
 	inputField->AppendText(".");
 }
 
+void MainFrame::onPowerButtonClicked(wxCommandEvent& evt)
+{
+	inputField->AppendText("^");
+}
+
+void MainFrame::onOpenButtonClicked(wxCommandEvent& evt)
+{
+	inputField->AppendText("(");
+}
+
+void MainFrame::onClosedButtonClicked(wxCommandEvent& evt)
+{
+	inputField->AppendText(")");
+}
+
+void MainFrame::onClearButtonClicked(wxCommandEvent& evt)
+{
+	inputField->Clear();
+}
+
 void MainFrame::onKeyEvent(wxKeyEvent& evt)
 {
 	int keyCode = evt.GetKeyCode();
+	int isShift = evt.ShiftDown();
+	if (evt.ShiftDown() && evt.GetKeyCode() == '6')
+	{
+		inputField->AppendText("^");
+		return;
+	}
+	else if (evt.ShiftDown() && evt.GetKeyCode() == '9')
+	{
+		inputField->AppendText("(");
+		return;
+	}
+	else if (evt.ShiftDown() && evt.GetKeyCode() == '0')
+	{
+		inputField->AppendText(")");
+		return;
+	}
+	else if (evt.ShiftDown() && evt.GetKeyCode() == '=')
+	{
+		inputField->AppendText("+");
+		return;
+	}
+
 
 	switch (keyCode) {
 		case '1':
@@ -308,109 +386,22 @@ void MainFrame::onKeyEvent(wxKeyEvent& evt)
 			window->Navigate();
 		}
 		case '=':
-		case WXK_RETURN:
 		case WXK_NUMPAD_ENTER:
-			calculate();
-			break;
+		case WXK_RETURN:
+		{
+			std::string str = inputField->GetValue().ToStdString();
+			std::string ans = calculate(str);
+			while (ans.back() == '0')
+				ans.pop_back();
+			if (ans.back() == '.') 
+				ans.pop_back();
+
+			long pos = inputField->GetInsertionPoint();
+			inputField->SetValue(ans);
+			inputField->SetInsertionPoint(ans.size());
+			return;
+		}
 		default :
 			break;
 	}
-}
-int MainFrame::precedence(char op)
-{
-	if (op == '+' || op == '-') return 1;
-	if (op == '*' || op == '/') return 2;
-	return 0;
-}
-
-long double MainFrame::apply(long double a, long double b, char op)
-{
-	if (op == '+') return a + b;
-	if (op == '-') return a - b;
-	if (op == '*') return a * b;
-	if (op == '/') return a / b;
-	return 0;
-}
-
-void MainFrame::calculate()
-{
-	std::string str = inputField->GetValue().ToStdString();
-	if(str.empty()) return;
-
-	bool isValid=1;
-	char prev='a';
-	for (char ch : str) {
-		if (prev != 'a' && !isdigit(ch) && !isdigit(prev)){
-			isValid=0;
-			break;
-		}
-		else if (prev == 'a' && (ch == '-' || ch == '+' || ch == '/' || ch == '*')) {
-			isValid=0;
-			break;
-		}
-		prev=ch;
-	}
-	if(!isdigit(str.back()))
-		isValid=0;
-
-	if (!isValid) {
-		long pos = inputField->GetInsertionPoint();
-		inputField->SetValue("0");
-		inputField->SetInsertionPoint(pos - 1);
-		return;
-	}
-	std::stack<long double> values;
-	std::stack<char> ops;
-
-	for (long i = 0; i < (long)str.size(); i++)
-	{
-		char c = str[i];
-
-		if (isdigit(c) || c == '.')
-		{
-			std::string num = "";
-			while (i < str.size() && (isdigit(str[i]) || str[i] == '.'))
-			{
-				num += str[i];
-				i++;
-			}
-			i--;
-			long double value = std::stold(num);
-			values.push(value);
-		}
-		else
-		{
-			while (!ops.empty() && precedence(ops.top()) >= precedence(c))
-			{
-				auto b = values.top(); values.pop();
-				auto a = values.top(); values.pop();
-
-				char op = ops.top(); ops.pop();
-
-				values.push(apply(a, b, op));
-			}
-			ops.push(c);
-		}
-	}
-	while (!ops.empty())
-	{
-		auto b = values.top(); values.pop();
-		auto a = values.top(); values.pop();
-
-		char op = ops.top(); ops.pop();
-
-		values.push(apply(a, b, op));
-	}
-	std::string ans = std::to_string(values.top());
-	while(ans.back()=='0')
-	{
-		ans.pop_back();
-		if (ans.back() == '.') {
-			ans.pop_back();
-			break;
-		}
-	}
-	long pos = inputField->GetInsertionPoint();
-	inputField->SetValue(ans);
-	inputField->SetInsertionPoint(std::max(pos, (long)ans.size()));
 }

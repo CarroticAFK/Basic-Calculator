@@ -4,7 +4,7 @@ wxIMPLEMENT_APP(App);
 
 bool App::OnInit()
 {
-	MainFrame* mainframe = new MainFrame("To Do List");
+	MainFrame* mainframe = new MainFrame("MyCalculator");
 	mainframe->SetClientSize(400, 400);
 	mainframe->Show();
 	mainframe->Center();

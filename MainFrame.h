@@ -1,5 +1,6 @@
 #pragma once
 #include<wx/wx.h>
+#include<stack>
 
 class MainFrame : public wxFrame {
 public:
@@ -23,6 +24,10 @@ private:
 	wxButton* divisionButton;
 	wxButton* equalButton;
 	wxButton* decimalButton;
+	wxButton* powerButton;
+	wxButton* openBracketButton;
+	wxButton* closedBracketButton;
+	wxButton* clearButton;
 
 	void createControls();	
 	void styleControls();
@@ -45,10 +50,10 @@ private:
 	void onButtonDivisionClicked(wxCommandEvent& evt);
 	void onButtonEqualClicked(wxCommandEvent& evt);
 	void onButtonDecimalClicked(wxCommandEvent& evt);
+	void onPowerButtonClicked(wxCommandEvent& evt);
+	void onOpenButtonClicked(wxCommandEvent& evt);
+	void onClosedButtonClicked(wxCommandEvent& evt);
+	void onClearButtonClicked(wxCommandEvent& evt);
 
 	void onKeyEvent(wxKeyEvent& evt);
-
-	void calculate();
-	int precedence(char op);
-	long double apply(long double a, long double b, char op);
 };
