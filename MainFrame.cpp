@@ -14,7 +14,7 @@ void MainFrame::createControls()
 	panel = new wxPanel(this);
 
 	historyButton = new wxButton(panel, wxID_ANY, "History", wxDefaultPosition, wxSize(100, 50));
-	inputField = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(400, 200));
+	inputField = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(400, 200), wxTE_PROCESS_ENTER | wxTE_MULTILINE);
 	inputField->SetFocus();
 
 	powerButton = new wxButton(panel, wxID_ANY, "^", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
@@ -413,19 +413,11 @@ void MainFrame::onKeyEvent(wxKeyEvent& evt)
 		case WXK_NUMPAD_ENTER:
 		case WXK_RETURN:
 		{
-			std::string str = inputField->GetValue().ToStdString();
-			std::string ans = calculate(str);
-			while (ans.back() == '0')
-				ans.pop_back();
-			if (ans.back() == '.') 
-				ans.pop_back();
+			wxCommandEvent dummy;
+			onButtonEqualClicked(dummy);
 
-			historyFrame->saveHistory(str, ans);
-
-			long pos = inputField->GetInsertionPoint();
-			inputField->SetValue(ans);
-			inputField->SetInsertionPoint(ans.size());
-			return;
+			evt.Skip(false);
+			return; 
 		}
 		default :
 			break;
