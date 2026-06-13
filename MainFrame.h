@@ -1,12 +1,15 @@
 #pragma once
 #include<wx/wx.h>
 #include<stack>
+#include "Calculation.h"
+#include "HistoryFrame.h"
 
 class MainFrame : public wxFrame {
 public:
 	MainFrame(const wxString& title);
 private:
 	wxPanel* panel;
+	wxButton* historyButton;
 	wxTextCtrl* inputField;
 	wxButton* zeroButton;
 	wxButton* oneButton;
@@ -28,6 +31,7 @@ private:
 	wxButton* openBracketButton;
 	wxButton* closedBracketButton;
 	wxButton* clearButton;
+	HistoryFrame* historyFrame = nullptr;
 
 	void createControls();	
 	void styleControls();
@@ -54,6 +58,9 @@ private:
 	void onOpenButtonClicked(wxCommandEvent& evt);
 	void onClosedButtonClicked(wxCommandEvent& evt);
 	void onClearButtonClicked(wxCommandEvent& evt);
+
+	void onHistoryButtonClicked(wxCommandEvent& evt);
+	void OnClose(wxCloseEvent& event);
 
 	void onKeyEvent(wxKeyEvent& evt);
 };

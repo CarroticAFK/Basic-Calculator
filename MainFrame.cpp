@@ -1,8 +1,5 @@
 #include "MainFrame.h"
-#include "App.h"
-#include "Calculation.h"
 #include<string>
-#include<stack>
 
 MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
 {
@@ -16,7 +13,9 @@ void MainFrame::createControls()
 {
 	panel = new wxPanel(this);
 
+	historyButton = new wxButton(panel, wxID_ANY, "History", wxDefaultPosition, wxSize(100, 50));
 	inputField = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(400, 200));
+	inputField->SetFocus();
 
 	powerButton = new wxButton(panel, wxID_ANY, "^", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
 	openBracketButton = new wxButton(panel, wxID_ANY, "(", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
@@ -42,6 +41,9 @@ void MainFrame::createControls()
 	decimalButton = new wxButton(panel, wxID_ANY, ".", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
 	divisionButton = new wxButton(panel, wxID_ANY, "/", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
 	equalButton = new wxButton(panel, wxID_ANY, "=", wxDefaultPosition, wxSize(100, 75), wxBORDER_NONE);
+
+	if(!historyFrame)
+		historyFrame = new HistoryFrame("History");
 }
 
 void MainFrame::styleControls()
@@ -50,6 +52,7 @@ void MainFrame::styleControls()
 	wxFont buttonFont(wxFontInfo(wxSize(0, 16)));
 	wxFont decimalButtonFont(wxFontInfo(wxSize(0, 24)));
 
+	historyButton->SetFont(buttonFont);
 	inputField->SetFont(inputFont);
 	zeroButton->SetFont(buttonFont);
 	oneButton->SetFont(buttonFont);
@@ -72,7 +75,8 @@ void MainFrame::styleControls()
 	closedBracketButton->SetFont(buttonFont);
 	clearButton->SetFont(buttonFont);
 
-	panel->SetBackgroundColour(wxColour(240, 240, 255));
+	panel->SetBackgroundColour(wxColour(255, 255, 255));
+	historyButton->SetBackgroundColour(wxColour(255, 255, 255));
 	zeroButton->SetBackgroundColour(wxColour(240, 248, 255));
 	oneButton->SetBackgroundColour(wxColour(240, 248, 255));
 	twoButton->SetBackgroundColour(wxColour(240, 248, 255));
@@ -98,6 +102,11 @@ void MainFrame::styleControls()
 void MainFrame::setSizers()
 {
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
+
+	wxBoxSizer* topRow = new wxBoxSizer(wxHORIZONTAL);
+	topRow->AddStretchSpacer();
+	topRow->Add(historyButton, 0, wxALIGN_CENTER_VERTICAL);
+	mainSizer->Add(topRow, wxSizerFlags().Proportion(0).Expand());
 
 	mainSizer->Add(inputField, wxSizerFlags().Proportion(1).Expand());
 
@@ -166,7 +175,10 @@ void MainFrame::bindControls()
 	equalButton->Bind(wxEVT_BUTTON, &MainFrame::onButtonEqualClicked, this);
 	decimalButton->Bind(wxEVT_BUTTON, &MainFrame::onButtonDecimalClicked, this);
 
+	historyButton->Bind(wxEVT_BUTTON, &MainFrame::onHistoryButtonClicked, this);
+
 	this->Bind(wxEVT_CHAR_HOOK, &MainFrame::onKeyEvent, this);
+	this->Bind(wxEVT_CLOSE_WINDOW, &MainFrame::OnClose, this);
 }
 
 void MainFrame::onButton1Clicked(wxCommandEvent& evt)
@@ -249,6 +261,8 @@ void MainFrame::onButtonEqualClicked(wxCommandEvent& evt)
 	if (ans.back() == '.') 
 		ans.pop_back();
 
+	historyFrame->saveHistory(str, ans);
+
 	long pos = inputField->GetInsertionPoint();
 	inputField->SetValue(ans);
 	inputField->SetInsertionPoint(std::max(pos, (long)ans.size()));
@@ -279,6 +293,19 @@ void MainFrame::onClearButtonClicked(wxCommandEvent& evt)
 	inputField->Clear();
 }
 
+void MainFrame::onHistoryButtonClicked(wxCommandEvent& evt)
+{
+	historyFrame->Show();
+}
+
+void MainFrame::OnClose(wxCloseEvent& event)
+{
+	if (historyFrame)
+		historyFrame->Destroy();
+
+	event.Skip();
+}
+
 void MainFrame::onKeyEvent(wxKeyEvent& evt)
 {
 	int keyCode = evt.GetKeyCode();
@@ -306,6 +333,8 @@ void MainFrame::onKeyEvent(wxKeyEvent& evt)
 
 
 	switch (keyCode) {
+		case WXK_TAB:
+			return;
 		case '1':
 		case WXK_NUMPAD1:
 			inputField->AppendText("1");
@@ -380,11 +409,6 @@ void MainFrame::onKeyEvent(wxKeyEvent& evt)
 			}
 			break;
 		}
-		case WXK_TAB :
-		{
-			wxWindow* window = (wxWindow*) evt.GetEventObject();
-			window->Navigate();
-		}
 		case '=':
 		case WXK_NUMPAD_ENTER:
 		case WXK_RETURN:
@@ -395,6 +419,8 @@ void MainFrame::onKeyEvent(wxKeyEvent& evt)
 				ans.pop_back();
 			if (ans.back() == '.') 
 				ans.pop_back();
+
+			historyFrame->saveHistory(str, ans);
 
 			long pos = inputField->GetInsertionPoint();
 			inputField->SetValue(ans);
